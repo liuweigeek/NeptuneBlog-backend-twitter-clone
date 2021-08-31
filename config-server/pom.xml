@@ -83,6 +83,7 @@
                         </executions>
                         <configuration>
                             <contextDirectory>${project.basedir}</contextDirectory>
+                            <dockerfile>${project.basedir}/Dockerfile</dockerfile>
                             <repository>${docker.image.prefix}/${project.artifactId}</repository>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                             <tag>${docker.tag}</tag>
