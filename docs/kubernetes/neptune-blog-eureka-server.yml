@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eureka-server-config-map
+data:
+  eureka_service_addresses: http://eureka-server-0.eureka-server:8761/eureka,http://eureka-server-1.eureka-server:8761/eureka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server-node-port
+  labels:
+    app: eureka-server
+spec:
+  type: NodePort
+  ports:
+    - port: 8761
+      nodePort: 30030
+      name: eureka-server
+  selector:
+    app: eureka-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+  labels:
+    app: eureka-server
+spec:
+  clusterIP: None
+  ports:
+    - port: 8761
+      name: eureka-server
+  selector:
+    app: eureka-server
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eureka-server
+spec:
+  serviceName: eureka-server
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+        - name: eureka-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/eureka-server:1.0
+          ports:
+            - containerPort: 8761
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1200Mi"
+              cpu: "500m"
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: JVM_OPTS
+              value: "-Xms1g -Xmx1g"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen

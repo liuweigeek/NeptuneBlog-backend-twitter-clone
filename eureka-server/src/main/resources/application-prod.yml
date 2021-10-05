@@ -1,12 +1,12 @@
 server:
-  port: 8080
+  port: 8761
 eureka:
   instance:
-    hostname: eureka-server
+    hostname: "${HOSTNAME}.eureka"
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: ${EUREKA_SERVER_ADDRESSES}
   server:
     enable-self-preservation: false
