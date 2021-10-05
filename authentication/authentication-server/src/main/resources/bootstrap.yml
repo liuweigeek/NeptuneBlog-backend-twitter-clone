@@ -18,7 +18,7 @@ spring:
       profile: ${spring.profiles.active}
 eureka:
   instance:
-    prefer-ip-address: true
+    preferIpAddress: true
 jwt:
   header: authorization
   headerPrefix: Bearer

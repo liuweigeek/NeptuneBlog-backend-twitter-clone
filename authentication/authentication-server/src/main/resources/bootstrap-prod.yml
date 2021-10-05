@@ -3,7 +3,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_ADDRESSES}
 spring:
   servlet:
     multipart:
@@ -13,7 +13,7 @@ spring:
     config:
       enabled: true
   rabbitmq:
-    host: SERVER_HOST
+    host: ${SERVER_HOST}
     port: 5672
     username: root
     password: 12345678

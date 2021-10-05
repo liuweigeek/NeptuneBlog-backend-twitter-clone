@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: eureka-server-config-map
 data:
-  eureka_service_addresses: http://eureka-server-0.eureka-server:8761/eureka,http://eureka-server-1.eureka-server:8761/eureka
+  eureka_service_addresses: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-1.eureka-server:8761/eureka/
 ---
 apiVersion: v1
 kind: Service
@@ -54,13 +54,6 @@ spec:
           image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/eureka-server:1.0
           ports:
             - containerPort: 8761
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "1200Mi"
-              cpu: "500m"
           env:
             - name: EUREKA_SERVER_ADDRESSES
               valueFrom:
@@ -69,8 +62,6 @@ spec:
                   key: eureka_service_addresses
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-            - name: JVM_OPTS
-              value: "-Xms1g -Xmx1g"
           livenessProbe:
             httpGet:
               path: /

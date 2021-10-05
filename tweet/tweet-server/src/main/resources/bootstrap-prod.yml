@@ -3,7 +3,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_ADDRESSES}
 spring:
   servlet:
     multipart:
@@ -14,7 +14,7 @@ spring:
       enabled: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://SERVER_HOST:3306/db_neptune_blog?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SERVER_HOST}:3306/db_neptune_blog?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: 12345678
     hikari:
@@ -37,7 +37,7 @@ spring:
       hibernate:
         format_sql: true
   redis:
-    host: SERVER_HOST
+    host: ${SERVER_HOST}
     port: 6379
     database: 0
     timeout: 20000
@@ -48,7 +48,7 @@ spring:
         max-idle: 8
         min-idle: 0
   rabbitmq:
-    host: SERVER_HOST
+    host: ${SERVER_HOST}
     port: 5672
     username: root
     password: 12345678
@@ -80,7 +80,7 @@ logging:
 neptune:
   oss:
     minio:
-      endpoint: http://SERVER_HOST:9000
+      endpoint: http://${SERVER_HOST}:9000
       accessKey: root
       secretKey: 12345678
       bucket: neptune-blog

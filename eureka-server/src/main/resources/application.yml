@@ -3,3 +3,6 @@ spring:
     name: eureka-server
   profiles:
     active: dev
+eureka:
+  instance:
+    preferIpAddress: true

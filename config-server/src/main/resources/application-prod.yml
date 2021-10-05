@@ -2,7 +2,7 @@ server:
   port: 8090
 spring:
   rabbitmq:
-    host: SERVER_HOST
+    host: ${SERVER_HOST}
     port: 5672
     username: scott
     password: 12345678
@@ -10,6 +10,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_ADDRESSES}
   instance:
-    prefer-ip-address: true
+    preferIpAddress: true

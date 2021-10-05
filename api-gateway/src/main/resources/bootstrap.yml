@@ -20,7 +20,7 @@ spring:
       profile: ${spring.profiles.active}
 eureka:
   instance:
-    prefer-ip-address: true
+    preferIpAddress: true
 zuul:
   SendErrorFilter.error.disable: true
   sensitiveHeaders: "*"
