@@ -1,0 +1,389 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eureka-server-config-map
+data:
+  eureka_service_addresses: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-1.eureka-server:8761/eureka/
+  server_host: 192.168.8.195
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server-node-port
+  labels:
+    app: eureka-server
+spec:
+  type: NodePort
+  ports:
+    - port: 8761
+      nodePort: 30030
+      name: eureka-server
+  selector:
+    app: eureka-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+  labels:
+    app: eureka-server
+spec:
+  clusterIP: None
+  ports:
+    - port: 8761
+      name: eureka-server
+  selector:
+    app: eureka-server
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eureka-server
+spec:
+  serviceName: eureka-server
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+        - name: eureka-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/eureka-server:1.0
+          ports:
+            - containerPort: 8761
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/config-server:1.0
+          ports:
+            - containerPort: 8090
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-server
+  template:
+    metadata:
+      labels:
+        app: authentication-server
+    spec:
+      containers:
+        - name: authentication-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/authentication-server:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-server
+  template:
+    metadata:
+      labels:
+        app: user-server
+    spec:
+      containers:
+        - name: user-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/user-server:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tweet-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tweet-server
+  template:
+    metadata:
+      labels:
+        app: tweet-server
+    spec:
+      containers:
+        - name: tweet-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/tweet-server:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-server
+  template:
+    metadata:
+      labels:
+        app: search-server
+    spec:
+      containers:
+        - name: search-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/search-server:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/api-gateway:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: eureka_service_addresses
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-server-config-map
+                  key: server_host
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-gateway
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
