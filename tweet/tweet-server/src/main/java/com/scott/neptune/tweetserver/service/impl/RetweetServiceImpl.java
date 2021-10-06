@@ -80,12 +80,12 @@ public class RetweetServiceImpl implements IRetweetService {
                 .orElseThrow(() -> new NeptuneBlogException("指定推文不存在"));
 
         TweetEntity retweet = tweetRepository.findOne((root, query, criteriaBuilder) ->
-                query.where(
-                        criteriaBuilder.and(
-                                criteriaBuilder.equal(root.get("referencedTweet").as(TweetEntity.class), originTweet),
-                                criteriaBuilder.equal(root.get("type").as(String.class), TweetTypeEnum.retweeted),
-                                criteriaBuilder.equal(root.get("authorId").as(Long.class), authUserId))
-                ).getRestriction())
+                        query.where(
+                                criteriaBuilder.and(
+                                        criteriaBuilder.equal(root.get("referencedTweet").as(TweetEntity.class), originTweet),
+                                        criteriaBuilder.equal(root.get("type").as(String.class), TweetTypeEnum.retweeted),
+                                        criteriaBuilder.equal(root.get("authorId").as(Long.class), authUserId))
+                        ).getRestriction())
                 .orElseThrow(() -> new NeptuneBlogException("指定转推不存在"));
 
         tweetRepository.deleteById(retweet.getId());

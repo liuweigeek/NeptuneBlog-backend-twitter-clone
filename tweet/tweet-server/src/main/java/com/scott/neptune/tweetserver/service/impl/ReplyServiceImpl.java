@@ -63,11 +63,11 @@ public class ReplyServiceImpl implements IReplyService {
         AssertUtils.assertNotNull(replyId, "请指定要删除的回复");
 
         TweetEntity reply = tweetRepository.findOne((root, query, criteriaBuilder) ->
-                query.where(
-                        criteriaBuilder.and(
-                                criteriaBuilder.equal(root.get("type").as(String.class), TweetTypeEnum.replied_to),
-                                criteriaBuilder.equal(root.get("authorId").as(Long.class), authUserId))
-                ).getRestriction())
+                        query.where(
+                                criteriaBuilder.and(
+                                        criteriaBuilder.equal(root.get("type").as(String.class), TweetTypeEnum.replied_to),
+                                        criteriaBuilder.equal(root.get("authorId").as(Long.class), authUserId))
+                        ).getRestriction())
                 .orElseThrow(() -> new NeptuneBlogException("指定回复不存在"));
 
         tweetRepository.deleteById(reply.getId());

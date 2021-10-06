@@ -3,6 +3,7 @@ package com.scott.neptune.apigateway;
 import com.scott.neptune.common.constant.Constant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @ComponentScan(basePackages = Constant.BASE_PACKAGE)
 @EnableFeignClients(basePackages = Constant.BASE_PACKAGE)
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, RedisAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableZuulProxy
 public class ApiGatewayApplication {

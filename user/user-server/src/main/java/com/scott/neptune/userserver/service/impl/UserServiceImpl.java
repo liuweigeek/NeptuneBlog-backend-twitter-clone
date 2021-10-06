@@ -115,9 +115,9 @@ public class UserServiceImpl implements IUserService {
             throw new RestException("请指定要查询的用户", HttpStatus.BAD_REQUEST);
         }
         return userRepository.findOne((root, query, criteriaBuilder) -> {
-            root.fetch("publicMetrics", JoinType.LEFT);
-            return query.where(criteriaBuilder.equal(root.get("id").as(Long.class), userId)).getRestriction();
-        })
+                    root.fetch("publicMetrics", JoinType.LEFT);
+                    return query.where(criteriaBuilder.equal(root.get("id").as(Long.class), userId)).getRestriction();
+                })
                 .map(userConvertor::convertToDto)
                 .map(userDto -> {
                     if (includeRelations) {
@@ -141,9 +141,9 @@ public class UserServiceImpl implements IUserService {
         }
 
         return userRepository.findOne((root, query, criteriaBuilder) -> {
-            root.fetch("publicMetrics", JoinType.LEFT);
-            return query.where(criteriaBuilder.equal(root.get("username").as(String.class), username)).getRestriction();
-        })
+                    root.fetch("publicMetrics", JoinType.LEFT);
+                    return query.where(criteriaBuilder.equal(root.get("username").as(String.class), username)).getRestriction();
+                })
                 .map(userConvertor::convertToDto)
                 .map(userDto -> {
                     if (includeRelations) {
@@ -168,9 +168,9 @@ public class UserServiceImpl implements IUserService {
         }
 
         return userRepository.findOne((root, query, criteriaBuilder) -> {
-            root.fetch("publicMetrics", JoinType.LEFT);
-            return query.where(criteriaBuilder.equal(root.get("email").as(String.class), email)).getRestriction();
-        })
+                    root.fetch("publicMetrics", JoinType.LEFT);
+                    return query.where(criteriaBuilder.equal(root.get("email").as(String.class), email)).getRestriction();
+                })
                 .map(userConvertor::convertToDto)
                 .map(userDto -> {
                     if (includeRelations) {
@@ -248,13 +248,13 @@ public class UserServiceImpl implements IUserService {
             return Collections.emptyList();
         }
         List<UserDto> userDtoList = userRepository.findAll((root, query, criteriaBuilder) ->
-                query.where(
-                        criteriaBuilder.or(
-                                criteriaBuilder.like(root.get("username").as(String.class), "%" + keyword + "%"),
-                                criteriaBuilder.like(root.get("name").as(String.class), "%" + keyword + "%"),
-                                criteriaBuilder.equal(root.get("email").as(String.class), keyword))
-                ).orderBy(criteriaBuilder.asc(root.get("createAt").as(Date.class)))
-                        .getRestriction()).stream()
+                        query.where(
+                                        criteriaBuilder.or(
+                                                criteriaBuilder.like(root.get("username").as(String.class), "%" + keyword + "%"),
+                                                criteriaBuilder.like(root.get("name").as(String.class), "%" + keyword + "%"),
+                                                criteriaBuilder.equal(root.get("email").as(String.class), keyword))
+                                ).orderBy(criteriaBuilder.asc(root.get("createAt").as(Date.class)))
+                                .getRestriction()).stream()
                 .map(simpleUserConvertor.convertToDto())
                 .collect(Collectors.toList());
         if (includeRelations) {

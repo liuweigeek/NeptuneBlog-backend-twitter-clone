@@ -61,10 +61,10 @@ public class FriendshipServiceImpl implements IFriendshipService {
 
         FriendshipEntity friendshipEntity = friendshipConvertor.convertToEntity(friendshipDto);
         return friendshipRepository.findById(
-                FriendshipEntity.FriendshipId.builder()
-                        .sourceId(friendshipDto.getSourceId())
-                        .targetId(friendshipDto.getTargetId())
-                        .build())
+                        FriendshipEntity.FriendshipId.builder()
+                                .sourceId(friendshipDto.getSourceId())
+                                .targetId(friendshipDto.getTargetId())
+                                .build())
                 .map(friendshipConvertor.convertToDto())
                 .orElseGet(() -> {
                     UserEntity sourceUser = Optional.ofNullable(userService.findUserById(friendshipDto.getSourceId(), null, false))
@@ -91,7 +91,7 @@ public class FriendshipServiceImpl implements IFriendshipService {
     @Override
     public FriendshipDto getBySourceAndTarget(Long sourceId, Long targetId) {
         return friendshipRepository.findById(FriendshipEntity.FriendshipId.builder()
-                .sourceId(sourceId).targetId(targetId).build())
+                        .sourceId(sourceId).targetId(targetId).build())
                 .map(friendshipConvertor.convertToDto())
                 .orElse(null);
     }
@@ -196,7 +196,7 @@ public class FriendshipServiceImpl implements IFriendshipService {
                     .collect(Collectors.toList());
         } else {
             userRelationshipList = friendshipRepository.findAllBySourceUserAndTargetUserIn(userId, targetUserIds,
-                    Sort.by(Sort.Order.desc("followDate"))).stream()
+                            Sort.by(Sort.Order.desc("followDate"))).stream()
                     .map(friendshipEntity -> {
                         RelationshipUserDto relationshipUserDto = relationshipUserConvertor.convertToDto(friendshipEntity.getTargetUser());
                         relationshipUserDto.addRelationInfo(friendshipEntity.getFollowDate(), friendshipEntity.getFollowFrom());
@@ -233,7 +233,7 @@ public class FriendshipServiceImpl implements IFriendshipService {
                     .collect(Collectors.toList());
         } else {
             userRelationshipList = friendshipRepository.findAllByTargetUserAndSourceUserIn(userId, sourceUserIds,
-                    Sort.by(Sort.Order.desc("followDate"))).stream()
+                            Sort.by(Sort.Order.desc("followDate"))).stream()
                     .map(friendshipEntity -> {
                         RelationshipUserDto relationshipUserDto = relationshipUserConvertor.convertToDto(friendshipEntity.getSourceUser());
                         relationshipUserDto.addRelationInfo(friendshipEntity.getFollowDate(), friendshipEntity.getFollowFrom());
@@ -267,7 +267,7 @@ public class FriendshipServiceImpl implements IFriendshipService {
                     .collect(Collectors.toList());
         } else {
             return friendshipRepository.findAllBySourceUserAndTargetUserIn(userId, targetUserIds,
-                    Sort.by(Sort.Order.desc("followDate"))).stream()
+                            Sort.by(Sort.Order.desc("followDate"))).stream()
                     .map(friendshipConvertor.convertToDto())
                     .map(FriendshipDto::getTargetId)
                     .collect(Collectors.toList());
@@ -293,7 +293,7 @@ public class FriendshipServiceImpl implements IFriendshipService {
                     .collect(Collectors.toList());
         } else {
             return friendshipRepository.findAllByTargetUserAndSourceUserIn(userId, sourceUserIds,
-                    Sort.by(Sort.Order.desc("followDate"))).stream()
+                            Sort.by(Sort.Order.desc("followDate"))).stream()
                     .map(friendshipConvertor.convertToDto())
                     .map(FriendshipDto::getSourceId)
                     .collect(Collectors.toList());

@@ -32,9 +32,9 @@ public class LikeServiceImpl implements ILikeService {
     public LikeDto save(LikeDto likeDto) {
         LikeEntity likeEntity = likeConvertor.convertToEntity(likeDto);
         return likeRepository.findById(LikeEntity.LikeId.builder()
-                .tweetId(likeDto.getTweetId())
-                .userId(likeDto.getUserId())
-                .build())
+                        .tweetId(likeDto.getTweetId())
+                        .userId(likeDto.getUserId())
+                        .build())
                 .map(likeConvertor.convertToDto())
                 .orElseGet(() -> {
                     likeEntity.setCreateAt(new Date());

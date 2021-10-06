@@ -1,4 +1,4 @@
-package com.scott.neptune.apigateway.util;
+package com.scott.neptune.apigateway.utils;
 
 import com.scott.neptune.authenticationclient.client.AuthClient;
 import com.scott.neptune.authenticationclient.jwt.JwtTokenProvider;
