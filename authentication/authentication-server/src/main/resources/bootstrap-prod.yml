@@ -11,7 +11,7 @@ spring:
       max-request-size: 50MB
   cloud:
     config:
-      enabled: true
+      enabled: false
   rabbitmq:
     host: ${SERVER_HOST}
     port: 5672

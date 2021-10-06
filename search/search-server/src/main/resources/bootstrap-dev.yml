@@ -8,17 +8,6 @@ spring:
   cloud:
     config:
       enabled: false
-  redis:
-    host: localhost
-    port: 6379
-    database: 0
-    timeout: 20000
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 8
-        min-idle: 0
   rabbitmq:
     host: localhost
     port: 5672
@@ -54,8 +43,3 @@ logging:
     org.springframework.cloud.openfeign: debug
     org.springframework.cloud.bus: debug
     com.scott.neptune: debug
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

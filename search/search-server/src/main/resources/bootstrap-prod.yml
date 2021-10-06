@@ -7,18 +7,7 @@ eureka:
 spring:
   cloud:
     config:
-      enabled: true
-  redis:
-    host: ${SERVER_HOST}
-    port: 6379
-    database: 0
-    timeout: 20000
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 8
-        min-idle: 0
+      enabled: false
   rabbitmq:
     host: ${SERVER_HOST}
     port: 5672

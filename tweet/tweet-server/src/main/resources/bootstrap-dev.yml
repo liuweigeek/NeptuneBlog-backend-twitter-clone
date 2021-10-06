@@ -93,8 +93,3 @@ neptune:
       bucket: neptune-blog
   file:
     tempFolder: /Users/scott/Data/neptune_files/tweet
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

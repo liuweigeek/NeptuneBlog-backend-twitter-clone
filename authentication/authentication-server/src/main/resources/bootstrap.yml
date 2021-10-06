@@ -19,6 +19,11 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 jwt:
   header: authorization
   headerPrefix: Bearer

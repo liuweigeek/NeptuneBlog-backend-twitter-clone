@@ -29,7 +29,11 @@ zuul:
     user-server: /user-server/**
     tweet-server: /tweet-server/**
     search-server: /search-server/**
-    mail-server: /mail-server/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 jwt:
   header: authorization
   headerPrefix: Bearer
