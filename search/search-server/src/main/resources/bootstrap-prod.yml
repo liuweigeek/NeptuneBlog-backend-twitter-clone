@@ -9,7 +9,7 @@ spring:
     config:
       enabled: false
   rabbitmq:
-    host: ${SERVER_HOST}
+    host: rabbitmq-service
     port: 5672
     username: root
     password: 12345678
