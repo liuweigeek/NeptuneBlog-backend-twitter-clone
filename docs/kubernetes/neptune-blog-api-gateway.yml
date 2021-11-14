@@ -52,7 +52,7 @@ metadata:
     app: neptune-blog
     name: api-gateway-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: neptune-blog
     name: api-gateway-pod
