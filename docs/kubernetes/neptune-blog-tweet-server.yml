@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tweet-deploy
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: neptune-blog
