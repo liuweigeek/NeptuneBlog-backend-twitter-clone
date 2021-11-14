@@ -37,4 +37,4 @@ logging:
   level:
     org.springframework.cloud.openfeign: error
     org.springframework.cloud.bus: error
-    com.scott.neptune: error
+    com.scott.neptune: info

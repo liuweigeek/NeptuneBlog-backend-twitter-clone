@@ -27,7 +27,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer(RedisTemplate<String, Object> redisTemplate) {
-
+        log.info("Configuring RedisCacheManager...");
         return (builder) -> builder
                 .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig()
                         .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getStringSerializer()))
