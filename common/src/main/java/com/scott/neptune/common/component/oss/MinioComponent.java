@@ -18,10 +18,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -161,7 +161,7 @@ public class MinioComponent {
                     .bucket(bucket)
                     .object(objectKey)
                     .stream(fileInputStream, file.length(), -1)
-                    .contentType(Files.probeContentType(Paths.get(file.getPath())))
+                    .contentType(new MimetypesFileTypeMap(Paths.get(file.getPath()).toString()).getContentType(file))
                     .build());
             return this.getObjectUrl(bucket, objectKey);
         } catch (Exception e) {
