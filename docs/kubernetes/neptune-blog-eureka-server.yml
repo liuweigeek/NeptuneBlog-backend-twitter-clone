@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eureka-server
+  labels:
+    app: neptune-blog
+    name: eureka-server-statefulset
+spec:
+  serviceName: eureka-server
+  replicas: 2
+  selector:
+    matchLabels:
+      app: neptune-blog
+      name: eureka-server-pod
+  template:
+    metadata:
+      labels:
+        app: neptune-blog
+        name: eureka-server-pod
+    spec:
+      containers:
+        - name: eureka-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/eureka-server:1.0
+          ports:
+            - containerPort: 8761
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: neptune-blog-config-map
+                  key: eureka_service_addresses
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+  labels:
+    app: neptune-blog
+    name: eureka-server-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8761
+      targetPort: 8761
+      nodePort: 30030
+  selector:
+    app: neptune-blog
+    name: eureka-server-pod

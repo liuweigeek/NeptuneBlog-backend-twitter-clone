@@ -7,7 +7,7 @@ services:
     container_name: mysql
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
     volumes:
@@ -18,7 +18,7 @@ services:
     image: redis:6.0.8
     container_name: redis
     ports:
-      - 6379:6379
+      - "6379:6379"
     volumes:
       - /Users/scott/Data/docker/redis/data:/data
 
@@ -29,8 +29,8 @@ services:
       - RABBITMQ_DEFAULT_USER=root
       - RABBITMQ_DEFAULT_PASS=12345678
     ports:
-      - 15672:15672
-      - 5672:5672
+      - "15672:15672"
+      - "5672:5672"
     volumes:
       - /Users/scott/Data/docker/rabbitmq/data:/var/lib/rabbitmq/mnesia
     logging:
@@ -44,7 +44,7 @@ services:
     container_name: minio
     command: server /data
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
       MINIO_ACCESS_KEY: root
       MINIO_SECRET_KEY: 12345678
@@ -55,13 +55,13 @@ services:
     image: openzipkin/zipkin:2.21.7
     container_name: zipkin
     ports:
-      - 9411:9411
+      - "9411:9411"
 
   mongo:
     image: mongo:4.0-xenial
     container_name: mongo
     ports:
-      - 27017:27017
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 12345678
@@ -72,10 +72,35 @@ services:
     image: postgres:13.1
     container_name: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 12345678
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /Users/scott/Data/docker/postgres/data:/var/lib/postgresql/data
+
+  influxdb:
+    image: influxdb:2.0.8
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_USERNAME: root
+      DOCKER_INFLUXDB_INIT_PASSWORD: 12345678
+      DOCKER_INFLUXDB_INIT_ORG: neptune
+      DOCKER_INFLUXDB_INIT_BUCKET: default-bucket
+    volumes:
+      - /Users/scott/Data/docker/influxdb/etc:/etc/influxdb2
+      - /Users/scott/Data/docker/influxdb/data:/var/lib/influxdb2
+
+  elasticsearch:
+    image: elasticsearch:7.14.1
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: single-node
+    volumes:
+      - /Users/scott/Data/docker/elasticsearch/data:/usr/share/elasticsearch/data

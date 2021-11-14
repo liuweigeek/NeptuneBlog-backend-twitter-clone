@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neptune-blog
+      name: search-pod
+  template:
+    metadata:
+      labels:
+        app: neptune-blog
+        name: search-pod
+    spec:
+      containers:
+        - name: search-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/search-server:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: EUREKA_SERVER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: neptune-blog-config-map
+                  key: eureka_service_addresses
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: aliyun-shenzhen
