@@ -59,7 +59,7 @@
 
 #### authentication
 
-授权中心模块, 使用Eureka Client、Spring Security、JWT
+授权中心模块, 使用Eureka Client、Feign、Spring Security、JWT
 
 #### user
 
@@ -67,11 +67,11 @@
 
 #### tweet
 
-推文模块, 使用Eureka Client、Spring Data JPA、MySQL
+推文模块, 使用Eureka Client、Feign、Spring Data JPA、MySQL
 
-#### mail
+#### search
 
-邮件模块, 使用Eureka Client
+搜索模块, 使用Eureka Client、Feign
 
 ## ❤️ Contributing
 
