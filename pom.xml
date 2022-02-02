@@ -30,7 +30,7 @@
         <module>config-server</module>
         <module>api-gateway</module>
         <module>common</module>
-        <module>authentication</module>
+        <module>auth</module>
         <module>user</module>
         <module>tweet</module>
         <module>search</module>

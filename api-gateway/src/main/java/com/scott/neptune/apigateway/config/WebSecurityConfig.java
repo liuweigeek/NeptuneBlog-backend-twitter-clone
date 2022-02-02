@@ -4,7 +4,7 @@ import com.scott.neptune.apigateway.filter.JwtTokenFilter;
 import com.scott.neptune.apigateway.handler.ApiAccessDeniedHandler;
 import com.scott.neptune.apigateway.handler.ApiAuthenticationEntryPoint;
 import com.scott.neptune.apigateway.handler.ApiAuthenticationFailureHandler;
-import com.scott.neptune.authenticationclient.jwt.JwtTokenProvider;
+import com.scott.neptune.authclient.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        log.debug("Config Api Access Security");
+        log.info("Config Api Access Security");
 
         http
                 .headers()

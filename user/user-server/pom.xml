@@ -29,7 +29,7 @@
 
         <dependency>
             <groupId>com.scott.neptune</groupId>
-            <artifactId>authentication-client</artifactId>
+            <artifactId>auth-client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

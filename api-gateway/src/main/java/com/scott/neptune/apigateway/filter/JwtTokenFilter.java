@@ -1,7 +1,7 @@
 package com.scott.neptune.apigateway.filter;
 
 import com.scott.neptune.apigateway.utils.SecurityUtils;
-import com.scott.neptune.authenticationclient.jwt.JwtTokenProvider;
+import com.scott.neptune.authclient.jwt.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

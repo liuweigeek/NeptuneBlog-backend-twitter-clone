@@ -1,10 +1,8 @@
 spring:
+  application:
+    name: auth-server
   profiles:
     active: dev
-  application:
-    name: api-gateway
-  messages:
-    basename: i18n/messages
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
@@ -21,14 +19,6 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
-zuul:
-  SendErrorFilter.error.disable: true
-  sensitiveHeaders: "*"
-  routes:
-    auth-server: /auth-server/**
-    user-server: /user-server/**
-    tweet-server: /tweet-server/**
-    search-server: /search-server/**
 management:
   endpoints:
     web:

@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.scott.neptune</groupId>
-        <artifactId>search</artifactId>
+        <artifactId>auth</artifactId>
         <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <name>${project.artifactId}</name>
-    <artifactId>search-server</artifactId>
+    <artifactId>auth-server</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -29,12 +29,6 @@
 
         <dependency>
             <groupId>com.scott.neptune</groupId>
-            <artifactId>tweet-client</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.scott.neptune</groupId>
             <artifactId>auth-client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -43,6 +37,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -76,6 +71,17 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
@@ -93,7 +99,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.scott.neptune.searchserver.SearchServerApplication</mainClass>
+                    <mainClass>com.scott.neptune.authserver.AuthServerApplication</mainClass>
                     <includeSystemScope>true</includeSystemScope>
                 </configuration>
                 <executions>

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authentication-deploy
+  name: auth-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: neptune-blog
-      name: authentication-pod
+      name: auth-pod
   template:
     metadata:
       labels:
         app: neptune-blog
-        name: authentication-pod
+        name: auth-pod
     spec:
       containers:
-        - name: authentication-server
-          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/authentication-server:1.0
+        - name: auth-server
+          image: registry.cn-shenzhen.aliyuncs.com/neptune-blog/auth-server:1.0
           ports:
             - containerPort: 8080
           env:

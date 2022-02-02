@@ -1,7 +1,7 @@
 package com.scott.neptune.apigateway.utils;
 
-import com.scott.neptune.authenticationclient.client.AuthClient;
-import com.scott.neptune.authenticationclient.jwt.JwtTokenProvider;
+import com.scott.neptune.authclient.client.AuthClient;
+import com.scott.neptune.authclient.jwt.JwtTokenProvider;
 import com.scott.neptune.common.util.SpringContextUtils;
 import com.scott.neptune.userclient.dto.AuthUserDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
