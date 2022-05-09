@@ -41,15 +41,16 @@ public class JwtTokenProvider {
         claims.put(CLAIM_KEY_EMAIL, user.getEmail());
 
         Key signingKey = generateSigningKey(jwtProperties.getSecret());
-        return jwtProperties.getHeaderPrefix() + " " + Jwts.builder()
-                .setId(Long.toString(user.getId()))
-                .setSubject(user.getUsername())
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setNotBefore(now)
-                .setExpiration(expirationDate)
-                .signWith(JwtTokenProvider.SIGNATURE_ALGORITHM, signingKey)
-                .compact();
+        return jwtProperties.getHeaderPrefix() + " " +
+                Jwts.builder()
+                        .setId(Long.toString(user.getId()))
+                        .setSubject(user.getUsername())
+                        .setClaims(claims)
+                        .setIssuedAt(now)
+                        .setNotBefore(now)
+                        .setExpiration(expirationDate)
+                        .signWith(JwtTokenProvider.SIGNATURE_ALGORITHM, signingKey)
+                        .compact();
     }
 
     public String getUsername(String claimsJws) {
@@ -78,9 +79,8 @@ public class JwtTokenProvider {
         return AuthUserDto.builder().id(userId).username(username).email(email).authorities(new String[]{}).build();
     }
 
-    public boolean validateToken(String token) throws JwtException, IllegalArgumentException {
+    public void validateToken(String token) throws JwtException, IllegalArgumentException {
         Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
-        return true;
     }
 
     private Key generateSigningKey(String secret) {
