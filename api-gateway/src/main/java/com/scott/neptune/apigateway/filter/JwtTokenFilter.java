@@ -42,6 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             } catch (JwtException | IllegalArgumentException e) {
                 log.error("无效的token: {}", claimsJws);
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return;
             }
         }
         filterChain.doFilter(request, response);
