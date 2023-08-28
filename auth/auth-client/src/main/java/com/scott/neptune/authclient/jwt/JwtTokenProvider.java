@@ -80,7 +80,8 @@ public class JwtTokenProvider {
     }
 
     public void validateToken(String token) throws JwtException, IllegalArgumentException {
-        Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
+        Key signingKey = generateSigningKey(jwtProperties.getSecret());
+        Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
     }
 
     private Key generateSigningKey(String secret) {
